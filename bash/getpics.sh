@@ -22,9 +22,16 @@ mkdir -p ~/public_html/pics || (echo "Failed to make a new pics directory" && ex
 # delete the local copy of the zipfile after a successful unpack of the zipfile
 wget -q -O ~/public_html/pics/pics.zip http://zonzorp.net/pics.zip && unzip -d ~/public_html/pics -o -q ~/public_html/pics/pics.zip && rm ~/public_html/pics/pics.zip
 
-# Task 1: Improve this script to also retrieve and install the files kept in the https://zonzorp.net/pics.tgz tarfile
-#     test to make sure the download and extraction commands work
-#     then delete the local copy of the tarfile if the extraction was successful
+# Download pics.tgz if not already downloaded
+if [ ! -f ~/public_html/pics.tgz ]; then
+    wget -q -o ~/public_html/pics/pics.tgz https://zonzorp.net/pics.tgz
+fi
+
+# Extract the tarfile if it exists, and if extraction is successful, then delete the tarfile
+if [ -f ~/public_html/pics/pics.tgz ]; then
+    tar -xzf ~/public_html/pics/pics.tgz -C ~/public_html/pics && rm ~/public_html/pics/pics.tgz
+fi
+
 
 # Make a report on what we have in the Pictures directory
 test -d ~/public_html/pics && cat <<EOF
